@@ -1,6 +1,45 @@
 <!--DOCTYPE=html-->
 <html>
+<body>
+<button type= "button" onclick= alert_function()> search </button>
 
-<button type= "button" onclick= window.alert(response.php)> search </button>
-
+<script type="text/javascript">
+function alert_function()
+{
+    var httpRequest;
+     makeRequest("request.php?q=definition");
+    
+        function makeRequest(url)
+        {
+            httpRequest = new XMLHttpRequest();
+            
+            
+            if (!httpRequest) 
+            {
+                alert("Failed to create xmlhttp instance");
+                return false;    
+            }
+            
+            httpRequest.onreadystatechange = alertContents;
+            httpRequest.open('GET', url);
+            httpRequest.send();
+        }
+        
+        function alertContents()
+        {
+            if (httpRequest.readyState === XMLHttpRequest.DONE) 
+            {
+                if (httpRequest.status === 200) 
+                {
+                    alert(httpRequest.responseText);
+                } 
+                else 
+                {
+                    alert('There was a problem with the request.');
+                }
+            }
+        }
+}
+</script>
+</body>
 </html>
