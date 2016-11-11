@@ -1,45 +1,58 @@
 <!--DOCTYPE=html-->
 <html>
 <body>
-<button type= "button" onclick= alert_function()> search </button>
+
+
+<div style='background-color: #5078E2;'> <h1 style='color: white'> Web Dictionary <h1> </div>
+<div>
+<form action = "request.php">
+    <input type="text" name="q" id="sterm" >
+    <input type= "button" value= "search " onclick="alert_function();"> 
+</form> 
+</div>
+
+<div><h3> Result <h3></div>
+<div id= "result"></div>
 
 <script type="text/javascript">
 function alert_function()
 {
     var httpRequest;
-     makeRequest("request.php?q=definition");
+    var sterm = document.getElementById('sterm').value;
+    makeRequest("request.php?q="+ sterm);
     
-        function makeRequest(url)
+    function makeRequest(url)
+    {
+        httpRequest = new XMLHttpRequest();
+        
+            
+        if (!httpRequest) 
         {
-            httpRequest = new XMLHttpRequest();
-            
-            
-            if (!httpRequest) 
-            {
-                alert("Failed to create xmlhttp instance");
-                return false;    
-            }
-            
-            httpRequest.onreadystatechange = alertContents;
-            httpRequest.open('GET', url);
-            httpRequest.send();
+            alert("Failed to create xmlhttp instance");
+            return false;    
         }
         
-        function alertContents()
+        httpRequest.onreadystatechange = alertContents;
+        httpRequest.open('GET', url);
+        httpRequest.send();
+    }
+        
+    function alertContents()
+    {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) 
         {
-            if (httpRequest.readyState === XMLHttpRequest.DONE) 
+            if (httpRequest.status === 200) 
             {
-                if (httpRequest.status === 200) 
-                {
-                    alert(httpRequest.responseText);
-                } 
-                else 
-                {
-                    alert('There was a problem with the request.');
-                }
+                document.getElementById("result").innerHTML = this.responseText;
+            } 
+            else 
+            {
+                alert('There was a problem with the request.');
             }
         }
-}
+    }
+}    
+    
 </script>
 </body>
 </html>
